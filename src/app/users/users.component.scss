@@ -1,0 +1,44 @@
+.users {
+    display: grid;
+    max-width: 760px;
+    grid-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    justify-content: flex-start;
+
+    padding: 20px;
+    margin: 20px;
+
+    .user {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-areas: 
+            "title delete"
+            "occupation occupation";
+
+        padding: 5px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+    }
+        .user-title {
+            grid-area: title;
+            margin: 0;
+        }
+
+        .user-delete {
+            grid-area: delete;
+            justify-self: end;
+            width: 20px;
+            height: 20px;
+            background: none;
+            border: none;
+            font-weight: bold;
+            color: #F00;
+            cursor: pointer;
+        }
+
+        .user-occupation {
+            grid-area: occupation;
+            margin: 0;
+        }
+}
