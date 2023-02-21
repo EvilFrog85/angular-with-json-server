@@ -1,9 +1,35 @@
 <p>users works!</p>
 
-<div class="users">
-    <div class="user" *ngFor="let user of users$ | async">
+<button class="user-action fa-2x add" (click)="toggleAddUser()"><fa-icon [icon]="faAdd"></fa-icon></button>
+<div class="edit-user-data-container add" *ngIf="showUserAdd">
+    <ng-container *ngTemplateOutlet="userForm; context: { $implicit: newUserData }"></ng-container>
+</div>
+
+<div class="users" *ngIf="(users$ | async) as users; else loading">
+    <div class="user" *ngFor="let user of users">
         <h3 class="user-title">{{ user.firstName +" "+ user.lastName }}</h3>
-        <button class="user-delete" (click)="deleteUser(user.id)">X</button>
+        <div class="actions-container">
+            <button class="user-action edit" (click)="toggleEditUser(user)"><fa-icon [icon]="faEdit"></fa-icon></button>
+            <button class="user-action delete" (click)="deleteUser(user.id!)"><fa-icon
+                    [icon]="faTrashAlt"></fa-icon></button>
+        </div>
         <p class="user-occupation">{{ user.occupation +', '+ user.age }}</p>
+        <div class="edit-user-data-container" *ngIf="showUserEdit && editUserData!.id === user.id">
+            <ng-container *ngTemplateOutlet="userForm; context: { $implicit: editUserData }"></ng-container>
+        </div>
     </div>
 </div>
+<ng-template #loading>
+    Laddar data...
+</ng-template>
+<ng-template #userForm let-userData>
+    <label for="firstName">First name:</label>
+    <input type="text" id="firstName" [value]="userData.firstName" [(ngModel)]="userData.firstName" />
+    <label for="lastName">Last name:</label>
+    <input type="text" id="lastName" [value]="userData.lastName" [(ngModel)]="userData.lastName" />
+    <label for="occupation">Occupation:</label>
+    <input type="text" id="occupation" [value]="userData.occupation" [(ngModel)]="userData.occupation" />
+    <label for="age">Age:</label>
+    <input type="number" min="0" id="age" [value]="userData.age" [(ngModel)]="userData.age" />
+    <button class="user-action edit-submit fa-2x" (click)="userData.id ? editUser(userData!) : createUser(userData)"><fa-icon [icon]="faSave"></fa-icon></button>
+</ng-template>

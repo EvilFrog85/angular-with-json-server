@@ -5,6 +5,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     justify-content: flex-start;
+    align-items: flex-start;
 
     padding: 20px;
     margin: 20px;
@@ -12,33 +13,75 @@
     .user {
         display: grid;
         grid-gap: 10px;
-        grid-template-areas: 
-            "title delete"
+        grid-template-areas:
+            "title actions"
             "occupation occupation";
 
         padding: 5px;
         border-radius: 3px;
         border: 1px solid #ccc;
     }
-        .user-title {
-            grid-area: title;
-            margin: 0;
-        }
 
-        .user-delete {
-            grid-area: delete;
-            justify-self: end;
-            width: 20px;
-            height: 20px;
-            background: none;
-            border: none;
-            font-weight: bold;
-            color: #F00;
-            cursor: pointer;
-        }
+    .user-title {
+        grid-area: title;
+        margin: 0;
+    }
 
-        .user-occupation {
-            grid-area: occupation;
-            margin: 0;
-        }
+    .actions-container {
+        grid-area: actions;
+        justify-self: end;
+    }
+
+    .user-occupation {
+        grid-area: occupation;
+        margin: 0;
+    }
+
+}
+
+.edit-user-data-container {
+    grid-column: 1/3;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 20px;
+
+    &.add {
+        max-width: 300px;
+    }
+
+    input {
+        margin-bottom: 10px;
+    }
+
+    .edit-submit {
+        width: 36px;
+        margin-left: auto;
+    }
+}
+
+.user-action {
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: rgb(110, 0, 0);
+    cursor: pointer;
+
+    &.edit {
+        color: rgb(0, 110, 0);
+    }
+
+    &.edit-submit {
+        color: rgb(0, 0, 110);
+    }
+
+    &.add {
+        width: auto;
+        padding: 2px 2px 0 4px;
+        line-height: 100%;
+        vertical-align: middle;
+        color: rgb(0, 0, 110);
+        box-shadow: 0 0 2px rgb(0 0 110);
+        text-align: center;
+        border-radius: 3px;
+    }
 }

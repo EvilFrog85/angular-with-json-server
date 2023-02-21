@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { throwError } from 'rxjs/internal/observable/throwError';
@@ -13,6 +13,12 @@ export class UserService {
 
     backendURL: string = 'http://localhost:4300';
 
+    httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+        })
+    };
+
     constructor(
         private http: HttpClient
     ) { }
@@ -20,8 +26,14 @@ export class UserService {
     getUsers(): Observable<User[]> {
         return this.http.get<User[]>(this.backendURL + '/users').pipe( catchError(this.errorHandler) );
     }
-    deleteUser(userId: number) {
-        return this.http.delete(this.backendURL + '/users/' + userId).pipe( catchError(this.errorHandler) );
+    addUser(user: User): Observable<User> {
+        return this.http.post<User>(this.backendURL + '/users', user, this.httpOptions).pipe( catchError(this.errorHandler) );
+    }
+    deleteUser(userId: number): Observable<void> {
+        return this.http.delete<void>(this.backendURL + '/users/' + userId).pipe( catchError(this.errorHandler) );
+    }
+    editUser(user: User): Observable<User> {
+        return this.http.patch<User>(this.backendURL + '/users/' + user.id, user, this.httpOptions).pipe( catchError(this.errorHandler) );
     }
     errorHandler(error: any) {
         let errorMessage = '';
