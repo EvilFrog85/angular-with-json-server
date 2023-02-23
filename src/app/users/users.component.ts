@@ -20,6 +20,8 @@ export class UsersComponent implements OnInit {
 
     showUserAdd: boolean = false;
     showUserEdit: boolean = false;
+    showConfirmDeleteModal: boolean = false;
+    userToDelete: User | null = null;
 
     newUserData: User = {
         firstName: '',
@@ -44,9 +46,15 @@ export class UsersComponent implements OnInit {
 
     ngOnInit(): void { }
 
-    deleteUser(id: number) {
-        this.userService.deleteUser(id).pipe(take(1)).subscribe(res => {
+    confirmDeleteUser(user: User) {
+        this.userToDelete = user;
+        this.showConfirmDeleteModal = !this.showConfirmDeleteModal;
+    }
+
+    deleteUser() {
+        this.userService.deleteUser(this.userToDelete!.id!).pipe(take(1)).subscribe(res => {
             this.users$ = this.userService.getUsers();
+            this.showConfirmDeleteModal = !this.showConfirmDeleteModal;
         });
     }
 

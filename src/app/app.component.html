@@ -1,4 +1,9 @@
-<a routerLink="/">Start</a>
-<a routerLink="/users">Användare</a>
-
-<router-outlet></router-outlet>
+<div class="layout">
+    <nav>
+        <p>Routes:</p>
+        <a routerLink="/users">Användare</a>
+    </nav>
+    <main>
+        <router-outlet></router-outlet>
+    </main>
+</div>

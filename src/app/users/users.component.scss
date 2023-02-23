@@ -1,42 +1,85 @@
-.users {
+.user-layout {
     display: grid;
-    max-width: 760px;
-    grid-gap: 10px;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    justify-content: flex-start;
-    align-items: flex-start;
+    grid-template-columns: auto 40px;
+    grid-template-rows: 40px auto;
+    grid-template-areas:
+        "header add"
+        "pageContent pageContent";
 
-    padding: 20px;
-    margin: 20px;
-
-    .user {
-        display: grid;
-        grid-gap: 10px;
-        grid-template-areas:
-            "title actions"
-            "occupation occupation";
-
-        padding: 5px;
-        border-radius: 3px;
-        border: 1px solid #ccc;
+    .default-content {
+        grid-area: header;
     }
 
-    .user-title {
-        grid-area: title;
-        margin: 0;
+    .user-action {
+        background: none;
+        border: none;
+        font-weight: bold;
+        color: rgb(110, 0, 0);
+        cursor: pointer;
+
+        &.edit {
+            color: rgb(0, 110, 0);
+        }
+
+        &.edit-submit {
+            color: rgb(0, 0, 110);
+        }
+
+        &.add {
+            grid-area: add;
+
+            width: auto;
+            padding: 2px 2px 0 4px;
+            line-height: 100%;
+            vertical-align: middle;
+            color: rgb(0, 0, 110);
+            box-shadow: 0 0 2px rgb(0 0 110);
+            text-align: center;
+            border-radius: 3px;
+        }
     }
 
-    .actions-container {
-        grid-area: actions;
-        justify-self: end;
-    }
+    .page-content {
+        grid-area: pageContent;
+        .users {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            justify-content: flex-start;
+            align-items: flex-start;
 
-    .user-occupation {
-        grid-area: occupation;
-        margin: 0;
-    }
+            padding: 20px;
+            margin: 20px;
 
+            .user {
+                display: grid;
+                grid-gap: 10px;
+                grid-template-areas:
+                    "title actions"
+                    "occupation occupation";
+
+                padding: 5px;
+                border-radius: 3px;
+                border: 1px solid #ccc;
+            }
+
+            .user-title {
+                grid-area: title;
+                margin: 0;
+            }
+
+            .actions-container {
+                grid-area: actions;
+                justify-self: end;
+            }
+
+            .user-occupation {
+                grid-area: occupation;
+                margin: 0;
+            }
+
+        }
+    }
 }
 
 .edit-user-data-container {
@@ -59,29 +102,64 @@
     }
 }
 
-.user-action {
-    background: none;
-    border: none;
-    font-weight: bold;
-    color: rgb(110, 0, 0);
-    cursor: pointer;
+.overlay {
+    position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2002;
+    width: 100vw;
+    height: 100vh;
+    background: hsla(0, 0%, 90%, .75);
+    overflow-y: auto;
+    overscroll-behavior: contain;
 
-    &.edit {
-        color: rgb(0, 110, 0);
-    }
-
-    &.edit-submit {
-        color: rgb(0, 0, 110);
-    }
-
-    &.add {
-        width: auto;
-        padding: 2px 2px 0 4px;
-        line-height: 100%;
-        vertical-align: middle;
-        color: rgb(0, 0, 110);
-        box-shadow: 0 0 2px rgb(0 0 110);
-        text-align: center;
+    .overlay-inner {
+        box-sizing: border-box;
+        width: calc(90% - 60px);
+        max-width: 640px;
+        padding: 23px 30px 16px 30px;
+        position: relative;
+            top: 88px;
+            z-index: 2003;
+        margin: auto auto 200px auto;
+        color: hsl(0, 0%, 20%);
+        background-color: hsl(0, 0%, 95%);
+        border: solid 1px hsl(0, 0%, 75%);
         border-radius: 3px;
+        box-shadow: 0 0 2px hsl(0, 0%, 55%);
+    }
+    .closeOverlay {
+        position: absolute;
+            right: 16px;
+            top: 16px;
+            z-index: 2004;
+        width: 16px;
+        height: 16px;
+        background: none;
+        border: 0;
+    
+        &:before, &:after {
+            content: '';
+            position: absolute;
+                top: -2px;
+                left: 5px;
+            height: 17px;
+            width: 2px;
+            background-color: hsl(0, 0%, 75%);
+        }
+        &:before{
+            transform: rotate(45deg);
+        }
+        &:after{
+            transform: rotate(-45deg);
+        }
+    
+        &:hover {
+            cursor: pointer;
+    
+            &:before, &:after {
+                background-color: hsl(0, 0%, 10%);
+            }
+        }
     }
 }

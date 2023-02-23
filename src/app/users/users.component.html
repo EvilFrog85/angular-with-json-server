@@ -1,24 +1,38 @@
-<p>users works!</p>
-
-<button class="user-action fa-2x add" (click)="toggleAddUser()"><fa-icon [icon]="faAdd"></fa-icon></button>
-<div class="edit-user-data-container add" *ngIf="showUserAdd">
-    <ng-container *ngTemplateOutlet="userForm; context: { $implicit: newUserData }"></ng-container>
-</div>
-
-<div class="users" *ngIf="(users$ | async) as users; else loading">
-    <div class="user" *ngFor="let user of users">
-        <h3 class="user-title">{{ user.firstName +" "+ user.lastName }}</h3>
-        <div class="actions-container">
-            <button class="user-action edit" (click)="toggleEditUser(user)"><fa-icon [icon]="faEdit"></fa-icon></button>
-            <button class="user-action delete" (click)="deleteUser(user.id!)"><fa-icon
-                    [icon]="faTrashAlt"></fa-icon></button>
+<div class="user-layout">
+    <p class="default-content">users module loaded!</p>
+    
+    <button class="user-action fa-2x add" (click)="toggleAddUser()"><fa-icon [icon]="faAdd"></fa-icon></button>
+    
+    <div class="page-content">
+        <div class="edit-user-data-container add" *ngIf="showUserAdd">
+            <ng-container *ngTemplateOutlet="userForm; context: { $implicit: newUserData }"></ng-container>
         </div>
-        <p class="user-occupation">{{ user.occupation +', '+ user.age }}</p>
-        <div class="edit-user-data-container" *ngIf="showUserEdit && editUserData!.id === user.id">
-            <ng-container *ngTemplateOutlet="userForm; context: { $implicit: editUserData }"></ng-container>
+        
+        <div class="users" *ngIf="(users$ | async) as users; else loading">
+            <div class="user" *ngFor="let user of users">
+                <h3 class="user-title">{{ user.firstName +" "+ user.lastName }}</h3>
+                <div class="actions-container">
+                    <button class="user-action edit" (click)="toggleEditUser(user)"><fa-icon [icon]="faEdit"></fa-icon></button>
+                    <button class="user-action deleteToggle" (click)="confirmDeleteUser(user)"><fa-icon
+                            [icon]="faTrashAlt"></fa-icon></button>
+                </div>
+                <p class="user-occupation">{{ user.occupation +', '+ user.age }}</p>
+                <div class="edit-user-data-container" *ngIf="showUserEdit && editUserData!.id === user.id">
+                    <ng-container *ngTemplateOutlet="userForm; context: { $implicit: editUserData }"></ng-container>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="overlay" *ngIf="showConfirmDeleteModal">
+    <div class="overlay-inner">
+        <p>Är du säker på att du vill ta bort användaren {{ userToDelete!.firstName + ' ' + userToDelete!.lastName }}?</p>
+        <button (click)="deleteUser()">Ta bort</button>
+        <button class="closeOverlay" (click)="showConfirmDeleteModal = false"></button>
+    </div>
+</div>
+
 <ng-template #loading>
     Laddar data...
 </ng-template>
